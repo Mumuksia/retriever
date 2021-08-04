@@ -12,7 +12,7 @@ public class PreferenceRetrieverController {
 
     @GetMapping(value = "retrieve/preference/by")
     @ResponseBody
-    public String getStoriesFromForumPage(@RequestParam(value = "user") String userId) {
+    public String getPreferencesByUser(@RequestParam(value = "user") String userId) {
         return preferenceRetrieverService.retrievePreferencesForUserId(userId);
     }
 }
