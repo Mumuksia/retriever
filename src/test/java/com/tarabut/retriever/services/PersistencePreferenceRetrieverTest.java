@@ -25,6 +25,8 @@ public class PersistencePreferenceRetrieverTest{
                 .thenReturn(Optional.of(createPreference()));
         when(preferencesRepository.findFirstByUserIdentifierOrderByIdDesc(MISSING_USER))
                 .thenReturn(Optional.empty());
+        when(preferencesRepository.findFirstByUserIdentifierOrderByIdDesc(null))
+                .thenThrow(IllegalArgumentException.class);
 
         persistencePreferenceRetriever.setPreferencesRepository(preferencesRepository);
     }
@@ -38,6 +40,12 @@ public class PersistencePreferenceRetrieverTest{
     @Test
     public void shouldRetrieveEmptyWhenNotPresent() {
         String testee = persistencePreferenceRetriever.retrievePreferencesForUserId(MISSING_USER);
+        Assertions.assertEquals("{}", testee);
+    }
+
+    @Test
+    public void shouldRetrieveEmptyWhenUserNull() {
+        String testee = persistencePreferenceRetriever.retrievePreferencesForUserId(null);
         Assertions.assertEquals("{}", testee);
     }
 

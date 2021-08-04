@@ -24,7 +24,12 @@ public class PersistencePreferenceRetriever implements PreferenceRetrieverServic
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(preferencesRepository.findFirstByUserIdentifierOrderByIdDesc(userIdentifier).orElse(new Preferences()));
-        } catch (JsonProcessingException e) {
+        }
+        catch (IllegalArgumentException ie){
+            logger.error("User identifier is null", ie);
+            return EMPTY_DATA;
+        }
+        catch (JsonProcessingException e) {
             logger.error("Exception when parsing preferences output", e);
             return EMPTY_DATA;
         }
